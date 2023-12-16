@@ -1,74 +1,128 @@
 import React, { useState, useEffect } from 'react';
-import TaskList from '../components/TaskList';
-import "../styles/tasks.css";
+import Task from '../components/Task';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [taskDueDate, setTaskDueDate] = useState('');
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
-  // useEffect(() => {
-  //   // Fetch tasks when the component mounts
-  //   fetchTasks();
-  // }, []);
-
-  // const fetchTasks = async () => {
-  //   try {
-  //     const response = await fetch('/tasks');
-  //     const data = await response.json();
-  //     setTasks(data);
-  //   } catch (error) {
-  //     console.error('Error fetching tasks:', error);
-  //   }
-  // };
-
-  const addTask = async () => {
+  const addTask = async (newTask) => {
     try {
-      const response = await fetch('http://localhost:3030/tasks', {
-        method: 'POST',
+      let apiUrl = 'http://localhost:5000/tasks';
+  
+      // If editingTask is not null, it's an edit operation
+      if (editingTask !== null) {
+        apiUrl += `/${editingTask._id}`;
+      } else {
+        apiUrl += `/create`;
+      }
+  
+      // Perform API call to save the task in the database
+      const response = await fetch(apiUrl, {
+        method: editingTask !== null ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-auth-token': localStorage.getItem('token'),
         },
-        body: JSON.stringify({ title: taskTitle, description: taskDescription, dueDate: taskDueDate }),
+        body: JSON.stringify(newTask),
       });
-      const data = await response.json();
-      setTasks([...tasks, data]);
-      setTaskTitle('');
+  
+      if (!response.ok) {
+        throw new Error('Failed to save the task in the database');
+      }
+  
+      const savedTask = await response.json();
+  
+      // If editingTask is not null, update the existing task
+      if (editingTask !== null) {
+        const updatedTasks = tasks.map((task) =>
+          task._id === editingTask._id ? savedTask : task
+        );
+        setTasks(updatedTasks);
+        setEditingTask(null);
+      } else {
+        // Otherwise, add the new task to the state
+        setTasks([...tasks, savedTask]);
+      }
+  
+      setShowTaskForm(false); // Hide the Task form after submitting
     } catch (error) {
-      console.error('Error adding task:', error);
+      console.error('Error:', error.message);
+    }
+  };
+  
+
+  const editTask = (task) => {
+    // Set the task to be edited, and show the Task form
+    setEditingTask(task);
+    setShowTaskForm(true);
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      // Perform API call to delete the task from the database
+      const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete the task from the database');
+      }
+
+      // Update the state by removing the deleted task
+      const updatedTasks = tasks.filter((task) => task._id !== taskId);
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error:', error.message);
     }
   };
 
-  // Rest of the component remains the same...
+  useEffect(() => {
+    // Fetch existing tasks from the database when the component mounts
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/tasks/all');
+        if (response.ok) {
+          const fetchedTasks = await response.json();
+          setTasks(fetchedTasks);
+        } else {
+          throw new Error('Failed to fetch tasks from the database');
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+
+    fetchTasks();
+  }, []); // Run this effect only once when the component mounts
 
   return (
     <div>
-      <h1>Tasks Page</h1>
+      {/* Create Task Button */}
+      <button onClick={() => setShowTaskForm(true)}>Create Task</button>
+
+      {/* Display Task Form */}
+      {showTaskForm && <Task onSubmit={addTask} editingTask={editingTask} />}
+
+      {/* Display Tasks */}
       <div>
-        <input
-          type="text"
-          value={taskTitle}
-          onChange={(e) => setTaskTitle(e.target.value)}
-        />
-         <input
-          type="text"
-          value={taskDescription}
-          onChange={(e) => setTaskDescription(e.target.value)}
-        />
-         <input
-          type="text"
-          value={taskDueDate}
-          onChange={(e) => setTaskDueDate(e.target.value)}
-        />
-        <button onClick={addTask}>Add Task</button>
+        {tasks.length === 0 ? (
+          <p>No tasks yet. Create one!</p>
+        ) : (
+          tasks.map((task, index) => (
+            <div key={index}>
+              {/* Display specific properties of the task object */}
+              <p>Title: {task.title}</p>
+              <p>Description: {task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+
+              {/* Edit and Delete Buttons */}
+              <button onClick={() => editTask(task)}>Edit</button>
+              <button onClick={() => deleteTask(task._id)}>Delete</button>
+            </div>
+          ))
+        )}
       </div>
-      {/* <TaskList
-        tasks={tasks}
-        onEdit={editTask}
-        onComplete={completeTask}
-        onDelete={deleteTask}
-      /> */}
     </div>
   );
 };

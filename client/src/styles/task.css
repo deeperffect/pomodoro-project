@@ -1,29 +1,46 @@
-.task {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+.tasks-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
-.task span {
-  flex-grow: 1;
-  margin-right: 10px;
+.tasks-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.task button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input,
+textarea {
+  width: 100%;
   padding: 8px;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: background-color 0.3s ease;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.task button:hover {
-  background-color: #45a049;
+button {
+  background-color: #61dafb;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4fa3d1;
+}
+
+label input[type="checkbox"] {
+  margin-left: 8px;
 }

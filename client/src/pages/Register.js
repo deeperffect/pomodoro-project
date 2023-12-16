@@ -29,7 +29,12 @@ const Register = () => {
     });
 
     const data = await response.json();
-    localStorage.setItem('userToken', data.token);
+    if(data.token) {
+      localStorage.setItem('token', data.token);
+      window.location.href = '/tasks';
+    } else {
+      alert(data);
+    }
   }
   
   return (

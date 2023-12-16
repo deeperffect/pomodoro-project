@@ -36,16 +36,13 @@ const Login = () => {
 
       if (result.success) {
         console.log('Login successful:', result.message);
-        localStorage.setItem('userToken', result.token);
-        const redirectUrl = result.redirectUrl;
-        window.location.href = redirectUrl;
+        localStorage.setItem('token', result.token);
+        window.location.href = '/tasks';
       } else {
         console.error('Login failed:', result.message);
-        // Show an error message to the user
       }
     } catch (error) {
       console.error('Error during login:', error);
-      // Show a generic error message to the user
     }
   };
 

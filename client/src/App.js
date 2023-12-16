@@ -5,22 +5,32 @@ import Header from './pages/Header';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Tasks from './pages/Tasks';
-import Schedule from './pages/Schedule';
+import StudyProjects from './pages/StudyProjects';
 import Timer from './pages/Timer';
 
 function App() {
+  const isAuthenticated = () => {
+    return localStorage.getItem('token') ? true : false;
+  };
+
   return (
     <Router>
-
-    <div className="home-container">
-    <Header />
+      <div className="home-container">
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/timer" element={<Timer />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/users/login" element={<Login />} />
-          <Route path="/users/register" element={<Register />} />
+          {isAuthenticated() ? (
+            <>
+              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/study-projects" element={<StudyProjects />} />
+            </>
+          ) : (
+            <>
+              <Route path="/users/login" element={<Login />} />
+              <Route path="/users/register" element={<Register />} />
+            </>
+          )}
         </Routes>
       </div>
     </Router>

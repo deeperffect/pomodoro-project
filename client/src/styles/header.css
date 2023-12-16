@@ -1,47 +1,51 @@
-nav {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  justify-content: space-between;
+/* header.css */
+
+.home-container {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.logo-container {
-  margin-right: auto;
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo {
+  width: 50px; /* Adjust the size as needed */
+  height: 50px; /* Adjust the size as needed */
+  background-color: #fff; /* Set the background color for your logo */
+  /* You can add a background image for your logo if needed */
 }
 
 ul {
   list-style: none;
-  padding: 0;
   display: flex;
+  gap: 20px;
 }
 
 li {
-  margin-right: 15px;
+  font-size: 18px;
 }
 
-a {
+li a {
   text-decoration: none;
   color: #fff;
-  font-weight: bold;
-  font-size: 16px;
+  font-family: 'Arial', sans-serif; /* Change the font family */
+  font-size: 16px; /* Adjust the font size */
+  padding: 10px 15px; /* Increase padding for larger buttons */
+  border-radius: 5px; /* Add rounded corners */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-a:hover {
-  color: #61dafb;
-}
-
-.logo-link {
-  display: block;
-}
-
-.logo {
-  width: 100px;
-  height: 50px; 
-  background-image: url('../../public/images/logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+li a:hover {
+  background-color: #555; /* Change the background color on hover */
+  color: #fff; /* Change the text color on hover */
 }

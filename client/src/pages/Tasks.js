@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Task from '../components/Task';
 import { onAuthError } from '../helpers/authentication';
+import { UserContext } from '../components/UserContext';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-
+  const { currentUser } = useContext(UserContext);
+  
   const postTask = async (taskId) => {
     try {
       const response = await fetch(`http://localhost:5000/tasks/${taskId}/post`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${currentUser.token}`,
         },
       });
 
@@ -42,7 +44,7 @@ const Tasks = () => {
         method: editingTask !== null ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${currentUser.token}`,
         },
         body: JSON.stringify(newTask),
       });
@@ -94,11 +96,13 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
+    if (currentUser) {
+    
+      const fetchTasks = async () => {
+        try {
         const response = await fetch('http://localhost:5000/tasks/all', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${currentUser.token}`,
           },
         });
         
@@ -113,10 +117,11 @@ const Tasks = () => {
         console.error('Error:', error.message);
       }
     };
-
+    
     fetchTasks();
-  }, []);
-
+  }
+  }, [currentUser]);
+  
   return (
     <div>
       <button onClick={() => setShowTaskForm(true)}>Create Task</button>

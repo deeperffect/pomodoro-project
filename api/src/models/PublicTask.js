@@ -3,6 +3,10 @@ const publicTaskSchema = new mongoose.Schema({
   title: String,
   description: String,
   dueDate: String,
+  originalId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Task',
+  },
   owner: {
     type: mongoose.Types.ObjectId,
     ref: 'User',

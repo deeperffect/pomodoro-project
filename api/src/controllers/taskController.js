@@ -16,11 +16,17 @@ router.post('/:taskId/post', async (req, res) => {
       title: originalTask.title,
       description: originalTask.description,
       dueDate: originalTask.dueDate,
+      originalId: originalTask._id,
     });
+    
+    const alreadyExists = await PublicTask.findOne(originalTask._id);
+    if(!alreadyExists) {
+      const savedTask = await newTask.save();
+      res.json(savedTask);
+    } else {
+      return res.status(404).json({ error: 'Task already exists' });
+    }
 
-    const savedTask = await newTask.save();
-
-    res.json(savedTask);
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });

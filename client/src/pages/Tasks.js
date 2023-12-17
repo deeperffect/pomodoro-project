@@ -11,11 +11,12 @@ const Tasks = () => {
   
   const postTask = async (taskId) => {
     try {
-      const response = await fetch(`http://localhost:5000/tasks/${taskId}/post`, {
-        method: 'POST',
+      const response = await fetch(`http://localhost:5000/tasks/post/${taskId}`, {
+        method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${currentUser.token}`,
         },
+        body: JSON.stringify({ taskId }),
       });
 
       if (!response.ok) {

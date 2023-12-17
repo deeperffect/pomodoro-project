@@ -5,13 +5,16 @@ const Task = ({ onSubmit, editingTask }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const [publicTask, setPublicTask] = useState(false);
 
 
   useEffect(() => {
     if (editingTask) {
+      console.log(editingTask)
       setTitle(editingTask.title || '');
       setDescription(editingTask.description || '');
       setDueDate(editingTask.dueDate || '');
+      setPublicTask(editingTask.publicTask || false);
     }
   }, [editingTask]);
 
@@ -22,6 +25,7 @@ const Task = ({ onSubmit, editingTask }) => {
       title,
       description,
       dueDate,
+      publicTask,
     };
 
     onSubmit(newTask);
@@ -29,6 +33,8 @@ const Task = ({ onSubmit, editingTask }) => {
     setTitle('');
     setDescription('');
     setDueDate('');
+    
+    
   };
 
   return (

@@ -1,32 +1,31 @@
 const router = require("express").Router();
 const Task = require('../models/Task');
 const authMiddleware = require('../middlewares/authMiddleware');
-const PublicTask = require("../models/PublicTask");
 
-router.post('/:taskId/post', async (req, res) => {
+router.post('/get/:id', authMiddleware.isAuth, async (req, res) => {
   try {
-    const taskId = req.params.taskId;
-    const originalTask = await Task.findById(taskId);
+    const taskId = req.params.id;
+    const ownerId = req.userId;
+    const task = await Task.findById(taskId);
+    const { title, description, dueDate, owner } = task;
 
-    if (!originalTask) {
-      return res.status(404).json({ error: 'Task not found' });
-    }
+    const newTask = new Task({
+      title: title,
+      description: description,
+      dueDate: dueDate,
+      owner: ownerId });
+    await newTask.save();
+    res.status(200).json({message: 'success'});
 
-    const newTask = new PublicTask({
-      title: originalTask.title,
-      description: originalTask.description,
-      dueDate: originalTask.dueDate,
-      originalId: originalTask._id,
-    });
-    
-    const alreadyExists = await PublicTask.findOne(originalTask._id);
-    if(!alreadyExists) {
-      const savedTask = await newTask.save();
-      res.json(savedTask);
-    } else {
-      return res.status(404).json({ error: 'Task already exists' });
-    }
+  }catch(error) {
+    console.log(error);
+  }
+});
 
+router.get('/public-tasks', async (req, res) => {
+  try {
+    const publicTasks = await Task.find({ public: true });
+    res.json(publicTasks);
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -36,12 +35,23 @@ router.post('/:taskId/post', async (req, res) => {
 
 router.post('/create', authMiddleware.auth, async (req, res) => {
   try {
-    const { title, description, dueDate } = req.body;
+    const { title, description, dueDate, public } = req.body;
     const userId = req.user._id;
-    const payload = { title, description, dueDate, owner: userId };
+    const payload = { title, description, dueDate, public, owner: userId };
     const createdTask = await Task.create(payload);
     res.status(201).json(createdTask);
   } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.patch('/post/:id', authMiddleware.auth, async (req, res) => {
+  try{
+    const taskId = req.params.id;
+    await Task.findByIdAndUpdate(taskId, { public: true });
+    res.status(200);
+  }catch(error){
     console.error(error);
     res.status(500).send('Internal Server Error');
   }

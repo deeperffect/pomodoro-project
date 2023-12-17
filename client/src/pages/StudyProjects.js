@@ -1,11 +1,12 @@
 import React from 'react';
 
 const StudyProjects = () => {
-  return(
+
+  return (
     <div>
       <h1>Study Projects</h1>
-    </div>  
-);
+    </div>
+  );
 };
 
 export default StudyProjects;

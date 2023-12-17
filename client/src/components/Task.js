@@ -6,7 +6,7 @@ const Task = ({ onSubmit, editingTask }) => {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
 
-  // Use useEffect to set initial form values when editingTask changes
+
   useEffect(() => {
     if (editingTask) {
       setTitle(editingTask.title || '');
@@ -18,23 +18,19 @@ const Task = ({ onSubmit, editingTask }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create a task object with the form values
     const newTask = {
       title,
       description,
       dueDate,
     };
 
-    // Pass the new task object to the parent component for handling
     onSubmit(newTask);
 
-    // Reset form fields
     setTitle('');
     setDescription('');
     setDueDate('');
   };
 
-  
   return (
     <div className="tasks-container">
       <form className="tasks-form" onSubmit={handleSubmit}>

@@ -2,26 +2,28 @@ const jwt = require('../lib/jwt');
 const { SECRET } = require('../config');
 
 exports.auth = async (req, res, next) => {
-  const token = req.cookies['token'];
-  if(token) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
     try {
       const decodedToken = await jwt.verify(token, SECRET);
       req.user = decodedToken;
-      res.locals.user = decodedToken;
-      res.locals.isAuthenticated = true;
       next();
     } catch (error) {
-      console.log({ error });
-      res.clearCookie('token');
+      return res.status(401).json('wrong credentials');
     }
-    return;
   }
-  next();
-};
+}
 
-exports.isAuth = (req, res, next) => {
-  if(!req.user) {
+exports.isAuth = async (req, res, next) => {
+  try{
+    const token = req.headers.authorization?.split(' ')[1];
+    const decodedToken = await jwt.verify(token, SECRET);
+    const userId = decodedToken._id;
+    req.userId = userId;
+    req.isAuth = true;
+  } catch(err) {
     return res.status(401).json('wrong credentials');
   }
   next();
 }
+

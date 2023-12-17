@@ -25,6 +25,7 @@ const Header = () => {
           {isAuthenticated() ? (
             <>
               <li><Link to="/tasks">Tasks</Link></li>
+              <li><Link to="/public-tasks">Public Tasks</Link></li>
               <li><Link to="/study-projects">Study Projects</Link></li>
               <li><button onClick={handleLogout}>Logout</button></li>
             </>

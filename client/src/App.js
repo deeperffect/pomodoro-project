@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Tasks from './pages/Tasks';
 import StudyProjects from './pages/StudyProjects';
 import Timer from './pages/Timer';
+import PublicTasks from './pages/PublicTasks';
 
 function App() {
   const isAuthenticated = () => {
@@ -23,6 +24,7 @@ function App() {
           {isAuthenticated() ? (
             <>
               <Route path="/tasks" element={<Tasks />} />
+              <Route path="/public-tasks" element={<PublicTasks />} />
               <Route path="/study-projects" element={<StudyProjects />} />
             </>
           ) : (

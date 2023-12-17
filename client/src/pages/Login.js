@@ -27,19 +27,12 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        console.log(response)
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      const data = await response.json();     
 
-      const result = await response.json();     
-
-      if (result.success) {
-        console.log('Login successful:', result.message);
-        localStorage.setItem('token', result.token);
+      if (data.success) {
+        console.log('Login successful:', data.message);
+        localStorage.setItem('token', data.token);
         window.location.href = '/tasks';
-      } else {
-        console.error('Login failed:', result.message);
       }
     } catch (error) {
       console.error('Error during login:', error);

@@ -10,7 +10,9 @@ const Timer = () => {
 
   return (
     <div>
-      <h1>Timer Page</h1>
+      <div className="page-name">
+        <h1>Timer</h1>
+      </div>
       <label>
         Set Time (minutes):
         <input

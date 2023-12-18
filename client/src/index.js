@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { UserProvider } from './components/UserContext';
-import './styles/reset.css';
 import './styles/imports.css';
 
 const root = document.getElementById('root');

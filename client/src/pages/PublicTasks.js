@@ -61,7 +61,7 @@ const PublicTasks = () => {
   };
 
   return (
-    <div>
+    <div className="page-name">
       <h1>Public Tasks</h1>
 
       {publicTasks.length === 0 ? (
@@ -74,18 +74,6 @@ const PublicTasks = () => {
               <button className="button" onClick={() => handleGetTask(task._id)}>Get Task</button>
               )}
             </TaskCard>
-            // <div className="task" key={task._id}>
-            //   <div className="task-content">
-            //     <h2>Title: {task.title}</h2>
-            //     <p>Description: {task.description}</p>
-            //     <p>Due Date: {task.dueDate}</p>
-            //   </div>
-            //   <div className='task-controls'>
-            //     {task.owner !== currentUser?.userId && (
-            //       <button className="button" onClick={() => handleGetTask(task._id)}>Get Task</button>
-            //       )}
-            //   </div>
-            // </div>
           ))}
         </div>
       )}

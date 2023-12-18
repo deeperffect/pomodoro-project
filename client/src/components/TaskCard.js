@@ -10,9 +10,6 @@ const TaskCard = ({task, children}) => {
             
       <div className="task-controls">
         {children}
-        {/* <button className="button" onClick={() => editTask(task)}>Edit</button>
-        <button className="button" onClick={() => deleteTask(task._id)}>Delete</button>
-        <button className="button" onClick={() => postTask(task._id)}>Post Task</button> */}
       </div>
     </div>
     );

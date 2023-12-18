@@ -9,55 +9,52 @@ const Tasks = () => {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const { currentUser } = useContext(UserContext);
-  
-  const postTask = async (taskId) => {
+
+  // Function to update the status of a task
+  const updateTaskStatus = async (taskId, status) => {
     try {
       const response = await fetch(`http://localhost:5000/tasks/post/${taskId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${currentUser.token}`,
         },
-        body: JSON.stringify({ taskId }),
+        body: JSON.stringify({ status }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to post the task');
+        throw new Error('Failed to update the task status');
       }
 
-      await response.json();
-      alert('Task posted successfully');
+      alert(`Task ${status === 'posted' ? 'posted' : 'updated'} successfully`);
     } catch (error) {
       console.error('Error:', error.message);
     }
   };
 
-
-  const addTask = async (newTask) => {
+  // Function to add or edit a task
+  const saveTask = async (newTask) => {
     try {
-      let apiUrl = 'http://localhost:5000/tasks';
-  
-      if (editingTask !== null) {
-        apiUrl += `/${editingTask._id}`;
-      } else {
-        apiUrl += `/create`;
-      }
-  
+      const apiUrl = editingTask !== null
+        ? `http://localhost:5000/tasks/${editingTask._id}`
+        : 'http://localhost:5000/tasks/create';
+
+      const method = editingTask !== null ? 'PUT' : 'POST';
+
       const response = await fetch(apiUrl, {
-        method: editingTask !== null ? 'PUT' : 'POST',
+        method,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${currentUser.token}`,
         },
         body: JSON.stringify(newTask),
       });
-  
+
       if (!response.ok) {
-        
         throw new Error('Failed to save the task in the database');
       }
-  
+
       const savedTask = await response.json();
-  
+
       if (editingTask !== null) {
         const updatedTasks = tasks.map((task) =>
           task._id === editingTask._id ? savedTask : task
@@ -67,19 +64,20 @@ const Tasks = () => {
       } else {
         setTasks([...tasks, savedTask]);
       }
-  
-      setShowTaskForm(false); 
+
+      setShowTaskForm(false);
     } catch (error) {
       onAuthError(error);
     }
   };
-  
 
+  // Function to edit a task
   const editTask = (task) => {
     setEditingTask(task);
     setShowTaskForm(true);
   };
 
+  // Function to delete a task
   const deleteTask = async (taskId) => {
     try {
       const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
@@ -97,40 +95,44 @@ const Tasks = () => {
     }
   };
 
+  // Fetch tasks on component mount or when the user changes
   useEffect(() => {
     if (currentUser) {
-    
       const fetchTasks = async () => {
         try {
-        const response = await fetch('http://localhost:5000/tasks/all', {
-          headers: {
-            'Authorization': `Bearer ${currentUser.token}`,
-          },
-        });
-        
-        if(response.status === 200) {
-          const fetchedTasks = await response.json();
-          setTasks(fetchedTasks);
+          const response = await fetch('http://localhost:5000/tasks/all', {
+            headers: {
+              'Authorization': `Bearer ${currentUser.token}`,
+            },
+          });
+
+          if (response.status === 200) {
+            const fetchedTasks = await response.json();
+            setTasks(fetchedTasks);
+          }
+
+          if (response.status === 401) {
+            onAuthError();
+          }
+        } catch (error) {
+          console.error('Error:', error.message);
         }
-        if(response.status === 401) {
-          onAuthError();
-        }
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    };
-    
-    fetchTasks();
-  }
+      };
+
+      fetchTasks();
+    }
   }, [currentUser]);
-  
+
   return (
     <div>
+      <div className="page-name">
+        <h1>Tasks</h1>
+      </div>
       <div className="grid button-grid shell-grid">
         <button className="button" onClick={() => setShowTaskForm(true)}>Create Task</button>
       </div>
 
-      {showTaskForm && <Task onSubmit={addTask} editingTask={editingTask} />}
+      {showTaskForm && <Task onSubmit={saveTask} editingTask={editingTask} />}
 
       <div>
         {tasks.length === 0 ? (
@@ -140,12 +142,11 @@ const Tasks = () => {
             {tasks.map((task) => (
               <TaskCard task={task} key={task._id}>
                 <>
-                <button className="button" onClick={() => editTask(task)}>Edit</button>
-                <button className="button" onClick={() => deleteTask(task._id)}>Delete</button>
-                <button className="button" onClick={() => postTask(task._id)}>Post Task</button>
+                  <button className="button" onClick={() => editTask(task)}>Edit</button>
+                  <button className="button" onClick={() => deleteTask(task._id)}>Delete</button>
+                  <button className="button" onClick={() => updateTaskStatus(task._id, 'posted')}>Post Task</button>
                 </>
               </TaskCard>
-
             ))}
           </div>
         )}

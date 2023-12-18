@@ -32,9 +32,7 @@ const Task = ({ onSubmit, editingTask }) => {
 
     setTitle('');
     setDescription('');
-    setDueDate('');
-    
-    
+    setDueDate('');   
   };
 
   return (

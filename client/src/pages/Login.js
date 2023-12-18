@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/login.css';
+import { UserContext } from '../components/UserContext';
+import { useContext } from 'react';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { setCurrentUserToken }= useContext(UserContext);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -32,7 +37,8 @@ const Login = () => {
       if (data.success) {
         console.log('Login successful:', data.message);
         localStorage.setItem('token', data.token);
-        window.location.href = '/tasks';
+        setCurrentUserToken(data.token);
+        navigate('/tasks');
       }
     } catch (error) {
       console.error('Error during login:', error);

@@ -8,11 +8,10 @@ import Tasks from './pages/Tasks';
 import StudyProjects from './pages/StudyProjects';
 import Timer from './pages/Timer';
 import PublicTasks from './pages/PublicTasks';
+import useAuthenticated from './hooks/useAuthenticated';
 
 function App() {
-  const isAuthenticated = () => {
-    return localStorage.getItem('token') ? true : false;
-  };
+  const isAuthenticated = useAuthenticated();
 
   return (
     <Router>
@@ -21,10 +20,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/timer" element={<Timer />} />
-          {isAuthenticated() ? (
+          <Route path="/public-tasks" element={<PublicTasks />} />
+          {isAuthenticated ? (
             <>
               <Route path="/tasks" element={<Tasks />} />
-              <Route path="/public-tasks" element={<PublicTasks />} />
               <Route path="/study-projects" element={<StudyProjects />} />
             </>
           ) : (

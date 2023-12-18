@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../components/UserContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const PublicTasks = () => {
   const [publicTasks, setPublicTasks] = useState([]);
   const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPublicTasks = async () => {
       try {
-
         const response = await fetch(`http://localhost:5000/tasks/public-tasks`);
         if (response.ok) {
           const fetchedTasks = await response.json();
@@ -26,6 +28,11 @@ const PublicTasks = () => {
   }, [currentUser]);
 
   const handleGetTask = (taskId) => {
+    if (!currentUser || !currentUser.token) {
+      navigate('/users/login');
+      return;
+    }
+
     const getTask = async () => {
       try {
         const response = await fetch(`http://localhost:5000/tasks/get/${taskId}`, {
@@ -40,8 +47,11 @@ const PublicTasks = () => {
           throw new Error('Failed to get task');
         }
 
-        const task = await response.json();
-        console.log(task);
+        await response.json();
+        if(response.ok){
+          alert("Task successfully added to your tasks list.");
+        }
+          
       } catch (error) {
         console.error('Error:', error.message);
       }
@@ -49,10 +59,6 @@ const PublicTasks = () => {
 
     getTask();
   };
-
-  if (!currentUser) {
-    return <p>Loading...</p>; // or another loading state
-  }
 
   return (
     <div>
@@ -67,9 +73,9 @@ const PublicTasks = () => {
               <p>Title: {task.title}</p>
               <p>Description: {task.description}</p>
               <p>Due Date: {task.dueDate}</p>
-              {task.owner !== currentUser.userId &&
-              <button onClick={() => handleGetTask(task._id)}>Get Task</button>
-              }
+              {task.owner !== currentUser?.userId && (
+                <button onClick={() => handleGetTask(task._id)}>Get Task</button>
+              )}
             </li>
           ))}
         </ul>

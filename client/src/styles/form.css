@@ -1,0 +1,37 @@
+.form {
+  max-width: 500px;
+  padding: 30px 20px;
+  margin: 0 auto;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form .title {
+  text-align: center;
+}
+
+.form-row {
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  text-transform: uppercase;
+  display: block; 
+  padding-bottom: 5px;
+}
+
+.form-row input,
+.form-row textarea {
+  max-width: 100%;
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.form .cta-link {
+  width: 100%;
+}

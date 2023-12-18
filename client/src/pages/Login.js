@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/login.css';
 import { UserContext } from '../components/UserContext';
 import { useContext } from 'react';
 
@@ -46,26 +45,32 @@ const Login = () => {
   };
 
   return (
-    <div className="content">
+    <div className="form">
       <h1 className="title">Login to Pomodoro Study</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          required
-          onChange={handleChange}
-        />
+        <div className="form-row">
+          <label htmlFor="email">Email:</label>
 
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          onChange={handleChange}
-        />
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-row">
+          <label htmlFor="password">Password:</label>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            onChange={handleChange}
+            />
+        </div>
 
         <button type="submit" className="cta-link">
           Login

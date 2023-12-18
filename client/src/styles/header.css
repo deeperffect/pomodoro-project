@@ -2,13 +2,43 @@
   background-color: #333;
   color: #fff;
   padding: 10px 20px;
+  position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-nav {
+.header aside {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nav ul {
+  display: flex;
+  gap: 20px;
   justify-content: space-between;
   align-items: center;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .logo-link {
@@ -17,33 +47,38 @@ nav {
 }
 
 .logo {
-  width: 50px; /* Adjust the size as needed */
-  height: 50px; /* Adjust the size as needed */
-  background-color: #fff; /* Set the background color for your logo */
-  /* You can add a background image for your logo if needed */
+  width: 50px; 
+  height: auto;   
+  font-size: 0px;
 }
 
-ul {
+.logo img {
+  width: 150%;
+  height: auto;
+  display: inline-block;
+}
+
+.nav ul {
   list-style: none;
   display: flex;
   gap: 20px;
 }
 
-li {
+.nav li {
   font-size: 18px;
 }
 
-li a {
+.nav li a {
   text-decoration: none;
   color: #fff;
-  font-family: 'Arial', sans-serif; /* Change the font family */
-  font-size: 16px; /* Adjust the font size */
-  padding: 10px 15px; /* Increase padding for larger buttons */
-  border-radius: 5px; /* Add rounded corners */
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 5px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-li a:hover {
-  background-color: #555; /* Change the background color on hover */
-  color: #fff; /* Change the text color on hover */
+.nav li a:hover {
+  background-color: #555;
+  color: #fff;
 }

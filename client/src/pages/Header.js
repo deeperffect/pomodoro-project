@@ -18,27 +18,45 @@ const Header = () => {
 
   return (
     <header className="header">
-      <nav>
-        <Link to="/" className="logo-link">
-          <div className="logo"></div>
+      <div className="header-inner">
+        <Link to="/" className="logo">
+          <img src="/images/logo.png" alt="logo"/>
         </Link>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/timer">Timer</Link></li>
-          <li><Link to="/public-tasks">Public Tasks</Link></li>
-          {isAuthenticated && (
-            <>
-              <li><Link to="/tasks">Tasks</Link></li>
-              <li><Link to="/study-projects">Study Projects</Link></li>
-            </>
-          )}
-        </ul>
-      </nav>
-          <Link to="/users/login">Login</Link>
-          <Link to="/users/register">Register</Link>
-          <button onClick={handleLogout}>Logout</button>
+
+        <div className="header-content">
+          <nav className="nav">
+            <ul>
+              <li><Link to="/">Home</Link></li>
+
+              <li><Link to="/timer">Timer</Link></li>
+
+              <li><Link to="/public-tasks">Public Tasks</Link></li>
+
+              {isAuthenticated && (
+                <>
+                  <li><Link to="/tasks">Tasks</Link></li>
+
+                  <li><Link to="/study-projects">Study Projects</Link></li>
+                </>
+              )}
+            </ul>
+          </nav>
+
+          <aside>
+            {!isAuthenticated ? (
+              <>
+                <Link to="/users/login" className="button">Login</Link>
+
+                <Link to="/users/register" className="button">Register</Link>
+              </>
+              ) : (
+                <button onClick={handleLogout} className="button">Logout</button>
+                )
+              }
+          </aside>
+        </div>
+      </div>
     </header>
   );
-};
-
+  }
 export default Header;

@@ -1,34 +1,26 @@
-.tasks-container {
+.task {
+  padding: 30px 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+.task .task-content {
+  padding-bottom: 20px;
+}
+
+.task .task-controls {
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.tasks-form {
-  max-width: 400px;
-  width: 100%;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.task .task-content h2 {
+  font-size: 25px;
+  padding-bottom: 15px;
 }
 
-
-
-button {
-  background-color: #61dafb;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #4fa3d1;
-}
-
-label input[type="checkbox"] {
-  margin-left: 8px;
+.task .task-content p {
+  padding-bottom: 5px;
 }

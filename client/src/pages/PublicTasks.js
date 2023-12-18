@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../components/UserContext';
 import { useNavigate } from 'react-router-dom';
-
+import TaskCard from '../components/TaskCard';
 
 const PublicTasks = () => {
   const [publicTasks, setPublicTasks] = useState([]);
@@ -62,23 +62,32 @@ const PublicTasks = () => {
 
   return (
     <div>
-      <h2>Public Tasks</h2>
+      <h1>Public Tasks</h1>
 
       {publicTasks.length === 0 ? (
         <p>No public tasks available.</p>
       ) : (
-        <ul>
+        <div className="grid shell-grid">
           {publicTasks.map((task) => (
-            <li key={task._id}>
-              <p>Title: {task.title}</p>
-              <p>Description: {task.description}</p>
-              <p>Due Date: {task.dueDate}</p>
+            <TaskCard task={task} key={task._id}>
               {task.owner !== currentUser?.userId && (
-                <button onClick={() => handleGetTask(task._id)}>Get Task</button>
+              <button className="button" onClick={() => handleGetTask(task._id)}>Get Task</button>
               )}
-            </li>
+            </TaskCard>
+            // <div className="task" key={task._id}>
+            //   <div className="task-content">
+            //     <h2>Title: {task.title}</h2>
+            //     <p>Description: {task.description}</p>
+            //     <p>Due Date: {task.dueDate}</p>
+            //   </div>
+            //   <div className='task-controls'>
+            //     {task.owner !== currentUser?.userId && (
+            //       <button className="button" onClick={() => handleGetTask(task._id)}>Get Task</button>
+            //       )}
+            //   </div>
+            // </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

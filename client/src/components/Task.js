@@ -37,7 +37,7 @@ const Task = ({ onSubmit, editingTask }) => {
 
   return (
     <div className="tasks-container">
-      <div className="form">
+      <div className="form form-space">
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <label htmlFor="title">Title:</label>
@@ -68,9 +68,9 @@ const Task = ({ onSubmit, editingTask }) => {
             />
           </div>
           {editingTask ? (
-            <button type="submit">Update Task</button>
+            <button className="button" type="submit">Update Task</button>
           ) : (
-            <button type="submit">Create Task</button>
+            <button className="button" type="submit">Create Task</button>
           )}
         </form>
       </div>

@@ -6,6 +6,10 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.form-space {
+  margin: 20px auto;
+}
+
 .form .title {
   text-align: center;
 }

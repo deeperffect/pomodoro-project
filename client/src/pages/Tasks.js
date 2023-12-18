@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Task from '../components/Task';
 import { onAuthError } from '../helpers/authentication';
 import { UserContext } from '../components/UserContext';
+import TaskCard from '../components/TaskCard';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -23,8 +24,8 @@ const Tasks = () => {
         throw new Error('Failed to post the task');
       }
 
-      const postedTask = await response.json();
-      console.log('Task posted successfully:', postedTask);
+      await response.json();
+      alert('Task posted successfully');
     } catch (error) {
       console.error('Error:', error.message);
     }
@@ -125,7 +126,9 @@ const Tasks = () => {
   
   return (
     <div>
-      <button onClick={() => setShowTaskForm(true)}>Create Task</button>
+      <div className="grid button-grid shell-grid">
+        <button className="button" onClick={() => setShowTaskForm(true)}>Create Task</button>
+      </div>
 
       {showTaskForm && <Task onSubmit={addTask} editingTask={editingTask} />}
 
@@ -133,17 +136,18 @@ const Tasks = () => {
         {tasks.length === 0 ? (
           <p>No tasks yet. Create one!</p>
         ) : (
-          tasks.map((task, index) => (
-            <div key={index}>
-              <p>Title: {task.title}</p>
-              <p>Description: {task.description}</p>
-              <p>Due Date: {task.dueDate}</p>
-              
-              <button onClick={() => editTask(task)}>Edit</button>
-              <button onClick={() => deleteTask(task._id)}>Delete</button>
-              <button onClick={() => postTask(task._id)}>Post Task</button>
-            </div>
-          ))
+          <div className="grid shell-grid">
+            {tasks.map((task) => (
+              <TaskCard task={task} key={task._id}>
+                <>
+                <button className="button" onClick={() => editTask(task)}>Edit</button>
+                <button className="button" onClick={() => deleteTask(task._id)}>Delete</button>
+                <button className="button" onClick={() => postTask(task._id)}>Post Task</button>
+                </>
+              </TaskCard>
+
+            ))}
+          </div>
         )}
       </div>
     </div>
